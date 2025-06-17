@@ -10,27 +10,27 @@ import {
 @Component({
   selector: 'step-1-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   template: `
     <form [formGroup]="form">
       <input formControlName="jmeno" placeholder="Jméno" />
     </form>
   `,
+  imports: [ReactiveFormsModule, CommonModule],
 })
 export class Step1FormComponent implements OnInit {
   @Output() valid = new EventEmitter<boolean>();
-
   form = new FormGroup({
     jmeno: new FormControl('', Validators.required),
   });
 
   ngOnInit() {
-    // Emituj počáteční validitu
-    this.valid.emit(this.form.valid);
-
-    // Sleduj změny ve validitě
     this.form.statusChanges.subscribe(() => {
       this.valid.emit(this.form.valid);
     });
+  }
+
+  submit() {
+    this.form.markAllAsTouched();
+    this.valid.emit(this.form.valid);
   }
 }

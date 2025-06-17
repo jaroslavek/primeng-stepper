@@ -18,19 +18,19 @@ import {
   `,
 })
 export class Step2FormComponent implements OnInit {
-  @Output() valid = new EventEmitter<boolean>();
-
+ @Output() valid = new EventEmitter<boolean>();
   form = new FormGroup({
     jmeno: new FormControl('', Validators.required),
   });
 
   ngOnInit() {
-    // Emituj počáteční validitu
-    this.valid.emit(this.form.valid);
-
-    // Sleduj změny ve validitě
     this.form.statusChanges.subscribe(() => {
       this.valid.emit(this.form.valid);
     });
+  }
+
+  submit() {
+    this.form.markAllAsTouched();
+    this.valid.emit(this.form.valid);
   }
 }
